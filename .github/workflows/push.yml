@@ -18,4 +18,4 @@ jobs:
       - name: Build the production build for integration test
         run: docker-compose -f prod.docker-compose.yml up -d
       - name: Test
-        run: docker run --network container:thinkmdv5-api apictl test
+        run: docker exec --name thinkmdv5-api ./apictl test -v
