@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  postgres-dev:
+    image: postgres:alpine3.14
+    container_name: postgres-dev
+    networks:
+      - github_actions
+    environment:
+      - "POSTGRES_USER=admin"
+      - "POSTGRES_PASSWORD=admin"
+      - "POSTGRES_DB=thinkmd-config"
+      - EXTRA_CONF=log_statement=all\nlog_directory='pg_log'\nlog_filename='postgresql-%Y-%m-%d_%H%M%S.log'\nlogging_collector=on\nlog_min_error_statement=error
+    ports:
+      - "5432:5432"
+  thinkmdv5-api-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: thinkmdv5api-dev
+    networks:
+      - github_actions
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres-dev
+    environment:
+      - "POSTGRES_URI=host=postgres-dev user=admin password=admin dbname=thinkmd-config port=5432 sslmode=disable TimeZone=America/New_York"
+    volumes:
+      - ./:/app
+
+networks:
+  github_actions:
+    driver: bridge
