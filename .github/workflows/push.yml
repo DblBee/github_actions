@@ -10,12 +10,22 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-go@v2
         with:
-          go-version: '^1.17.1'
+          go-version: "^1.17.1"
+
       - name: Build the postgres database for unit testing
         run: docker-compose -f dev.docker-compose.postgresonly.yml up -d
+
       - name: Run the unit tests
         run: go test ./... -v
+
+      - name: Teardown unit test environment
+        run: docker-compose -f dev.docker-compose.postgresonly.yml down
+
       - name: Build the production build for integration test
         run: docker-compose -f prod.docker-compose.yml up -d
+
       - name: Run the integration test
         run: docker exec --name thinkmdv5-api ./apictl test -v
+
+      - name: Teardown integration test environment
+        run: docker-compose -f prod.docker-compose.yml down
