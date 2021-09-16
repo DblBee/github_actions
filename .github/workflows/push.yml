@@ -13,9 +13,9 @@ jobs:
           go-version: '^1.17.1'
       - name: Build the postgres database for unit testing
         run: docker-compose -f dev.docker-compose.postgresonly.yml up -d
-      - name: Run Unit Tests
+      - name: Run the unit tests
         run: go test ./... -v
       - name: Build the production build for integration test
         run: docker-compose -f prod.docker-compose.yml up -d
-      - name: Test
+      - name: Run the integration test
         run: docker exec --name thinkmdv5-api ./apictl test -v
