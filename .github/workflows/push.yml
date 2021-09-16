@@ -9,6 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.17.1'
       - name: Build the postgres database for unit testing
         run: docker-compose -f dev.docker-compose.postgresonly.yml up -d
       - name: Run Unit Tests
