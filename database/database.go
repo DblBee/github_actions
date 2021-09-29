@@ -1,6 +1,7 @@
 package database
 
 import (
+	"fmt"
 	"os"
 	"time"
 
@@ -28,6 +29,7 @@ type Database struct{}
 
 func (d *Database) Setup() {
 	dsn := os.Getenv("POSTGRES_URI")
+	fmt.Println("dsn", dsn)
 	var newDB *gorm.DB
 	var err error
 

@@ -14,11 +14,7 @@ var repo models.AccountRepo
 func SetupEnvFile() {
 	// load .env file from given path
 	// we keep it empty it will load .env from current directory
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		panic(err)
-	}
+	godotenv.Load(".env")
 }
 
 func init() {
