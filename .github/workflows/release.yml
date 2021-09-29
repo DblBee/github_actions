@@ -1,0 +1,46 @@
+name: Build and Deploy on Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build_deploy:
+    runs-on: ubuntu-latest
+    name: Build and Deploy to Cloud
+    if: github.event_name == 'release' && github.event.action == 'created'
+    steps:
+      - name: Version
+        uses: paulhatch/semantic-version@v4.0.2
+        id:   gitversion
+        with:
+          # The prefix to use to identify tags
+          tag_prefix: "v"
+          # A string which, if present in a git commit, indicates that a change represents a
+          # major (breaking) change, supports regular expressions wrapped with '/'
+          major_pattern: "(MAJOR)"
+          # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+          minor_pattern: "(MINOR)"
+          # A string to determine the format of the version output
+          format: "${major}.${minor}.${patch}-prerelease${increment}"
+          # Indicate whether short tags like 'v1' should be supported. If false only full
+          # tags like 'v1.0.0' will be recognized.
+          short_tags: false
+          # If this is set to true, *every* commit will be treated as a new version.
+          bump_each_commit: false
+          
+      - name: Display GitVersion outputs
+        run: |
+              echo "Major: ${{ steps.gitversion.outputs.major }}"
+              echo "Minor: ${{ steps.gitversion.outputs.minor }}"
+              echo "Patch: ${{ steps.gitversion.outputs.patch }}"
+              echo "Patch: ${{ steps.gitversion.outputs.version_tag }}"
+
+      - name: Branch name
+        run: echo ${GITHUB_REF##*/}
+
+      - name: Output Run ID
+        run: echo $GITHUB_RUN_ID
+
+      - name: Output Run Number
+        run: echo $GITHUB_RUN_NUMBER

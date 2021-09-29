@@ -12,65 +12,30 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      # - uses: actions/setup-go@v2
-      #   with:
-      #     go-version: "^1.17.1"
-      
-      # - name: Build the postgres database for unit testing
-      #   run: docker-compose -f dev.docker-compose.postgresonly.yml up -d
-
-      # - name: Setup GO testing tools
-      #   run: go install honnef.co/go/tools/cmd/staticcheck@latest
-
-      # - name: Run Static Check (GO Linter)
-      #   run: staticcheck .
-
-      # - name: Run the unit tests
-      #   run: go test ./... -v
-
-      # - name: Teardown unit test environment
-      #   run: docker-compose -f dev.docker-compose.postgresonly.yml down
-
-      # - name: Build the production build for integration test
-      #   run: docker-compose -f prod.docker-compose.yml up -d
-
-      # - name: Run the integration test
-      #   run: echo THIS IS WHERE WE INJECT THE INTEGRATION TEST LIBRARY OR PROGRAM
-
-      # - name: Teardown integration test environment
-      #   run: docker-compose -f prod.docker-compose.yml down
-
-      - name: Version
-        uses: paulhatch/semantic-version@v4.0.2
-        id:   gitversion
+      - uses: actions/setup-go@v2
         with:
-          # The prefix to use to identify tags
-          tag_prefix: "v"
-          # A string which, if present in a git commit, indicates that a change represents a
-          # major (breaking) change, supports regular expressions wrapped with '/'
-          major_pattern: "(MAJOR)"
-          # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
-          minor_pattern: "(MINOR)"
-          # A string to determine the format of the version output
-          format: "${major}.${minor}.${patch}-prerelease${increment}"
-          # Indicate whether short tags like 'v1' should be supported. If false only full
-          # tags like 'v1.0.0' will be recognized.
-          short_tags: false
-          # If this is set to true, *every* commit will be treated as a new version.
-          bump_each_commit: false
-          
-      - name: Display GitVersion outputs
-        run: |
-              echo "Major: ${{ steps.gitversion.outputs.major }}"
-              echo "Minor: ${{ steps.gitversion.outputs.minor }}"
-              echo "Patch: ${{ steps.gitversion.outputs.patch }}"
-              echo "Patch: ${{ steps.gitversion.outputs.version_tag }}"
+          go-version: "^1.17.1"
+      
+      - name: Build the postgres database for unit testing
+        run: docker-compose -f dev.docker-compose.postgresonly.yml up -d
 
-      - name: Branch name
-        run: echo ${GITHUB_REF##*/}
+      - name: Setup GO testing tools
+        run: go install honnef.co/go/tools/cmd/staticcheck@latest
 
-      - name: Output Run ID
-        run: echo $GITHUB_RUN_ID
+      - name: Run Static Check (GO Linter)
+        run: staticcheck .
 
-      - name: Output Run Number
-        run: echo $GITHUB_RUN_NUMBER
+      - name: Run the unit tests
+        run: go test ./... -v
+
+      - name: Teardown unit test environment
+        run: docker-compose -f dev.docker-compose.postgresonly.yml down
+
+      - name: Build the production build for integration test
+        run: docker-compose -f prod.docker-compose.yml up -d
+
+      - name: Run the integration test
+        run: echo THIS IS WHERE WE INJECT THE INTEGRATION TEST LIBRARY OR PROGRAM
+
+      - name: Teardown integration test environment
+        run: docker-compose -f prod.docker-compose.yml down
