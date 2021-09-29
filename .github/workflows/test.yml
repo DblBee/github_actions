@@ -1,4 +1,4 @@
-on: pull_request
+on: push
 env:
   POSTGRES_URI: "host=0.0.0.0 user=admin password=admin dbname=thinkmd-config port=5432 sslmode=disable TimeZone=America/New_York"
   JWT_ACCESS_SECRET: unicorns
