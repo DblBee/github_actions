@@ -4,6 +4,9 @@ on:
   release:
     types: [created]
 
+env:
+  BB: BB
+
 jobs:
   build_deploy:
     runs-on: ubuntu-latest
@@ -44,3 +47,6 @@ jobs:
 
       - name: Output Run Number
         run: echo $GITHUB_RUN_NUMBER
+
+      - name: Output GITHUB HAS
+        run: echo ${GITHUB_REF##*/}
