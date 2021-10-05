@@ -29,7 +29,36 @@ import (
 	"strconv"
 
 	_ "github.com/jackc/pgx/v4/stdlib"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
+
+func connectToGorm() {
+	var (
+		dbUser                 = mustGetenv("DB_USER")                  // e.g. 'my-db-user'
+		dbPwd                  = mustGetenv("DB_PASS")                  // e.g. 'my-db-password'
+		instanceConnectionName = mustGetenv("INSTANCE_CONNECTION_NAME") // e.g. 'project:region:instance'
+		dbName                 = mustGetenv("DB_NAME")                  // e.g. 'my-database'
+	)
+
+	socketDir, isSet := os.LookupEnv("DB_SOCKET_DIR")
+	if !isSet {
+		socketDir = "/cloudsql"
+	}
+
+	dbURI := fmt.Sprintf("user=%s password=%s database=%s host=%s/%s", dbUser, dbPwd, dbName, socketDir, instanceConnectionName)
+
+	db, err := gorm.Open(postgres.Open(dbURI), &gorm.Config{})
+
+	if err != nil {
+		fmt.Println("connectToGorm - err ", err.Error())
+	}
+
+	if db != nil {
+		fmt.Println("connectToGorm - DB Connected ", dbURI)
+	}
+}
 
 // Note: If connecting using the App Engine Flex Go runtime, use
 // "github.com/jackc/pgx/stdlib" instead, since v4 requires
@@ -88,6 +117,8 @@ func (app *app) indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	connectToGorm()
+
 	app := newApp()
 
 	http.HandleFunc("/", app.indexHandler)
