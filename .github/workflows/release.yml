@@ -1,11 +1,16 @@
-name: Build and Deploy on Release
+name: Build and Deploy to GCP on Release
 
 on:
   release:
     types: [created]
 
 env:
-  BB: BB
+  SERVICE_NAME: thinkmd-v5-api
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  SA_KEY: ${{ secrets.GCP_SA_KEY }}
+  GIT_SHA: ${{ github.sha }}
+  REGISTRY_REGION: northamerica-northeast1-docker.pkg.dev
+  REGISTRY_ID: thinkmd-v5-dev
 
 jobs:
   build_deploy:
@@ -13,40 +18,19 @@ jobs:
     name: Build and Deploy to Cloud
     if: github.event_name == 'release' && github.event.action == 'created'
     steps:
-      - name: Version
-        uses: paulhatch/semantic-version@v4.0.2
-        id:   gitversion
+      - uses: actions/checkout@master
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
         with:
-          # The prefix to use to identify tags
-          tag_prefix: "v"
-          # A string which, if present in a git commit, indicates that a change represents a
-          # major (breaking) change, supports regular expressions wrapped with '/'
-          major_pattern: "(MAJOR)"
-          # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
-          minor_pattern: "(MINOR)"
-          # A string to determine the format of the version output
-          format: "${major}.${minor}.${patch}-prerelease${increment}"
-          # Indicate whether short tags like 'v1' should be supported. If false only full
-          # tags like 'v1.0.0' will be recognized.
-          short_tags: false
-          # If this is set to true, *every* commit will be treated as a new version.
-          bump_each_commit: false
-          
-      - name: Display GitVersion outputs
-        run: |
-              echo "Major: ${{ steps.gitversion.outputs.major }}"
-              echo "Minor: ${{ steps.gitversion.outputs.minor }}"
-              echo "Patch: ${{ steps.gitversion.outputs.patch }}"
-              echo "Patch: ${{ steps.gitversion.outputs.version_tag }}"
+          project_id: ${{ env.PROJECT_ID }}
+          service_account_key: ${{ env.SA_KEY }}
+          export_default_credentials: true
 
-      - name: Branch name
-        run: echo ${GITHUB_REF##*/}
+      - name: Authorize Docker push
+        run: gcloud --quiet auth configure-docker ${{ env.REGISTRY_REGION }}
 
-      - name: Output Run ID
-        run: echo $GITHUB_RUN_ID
-
-      - name: Output Run Number
-        run: echo $GITHUB_RUN_NUMBER
-
-      - name: Output GITHUB HAS
-        run: echo ${GITHUB_REF##*/}
+      - name: Build and Push Container
+        run: |-
+          docker build -t ${{ env.REGISTRY_REGION }}/${{ env.PROJECT_ID }}/${{ env.REGISTRY_ID }}/${{ env.SERVICE_NAME }}:${GITHUB_REF##*/} .
+          docker push ${{ env.REGISTRY_REGION }}/${{ env.PROJECT_ID }}/${{ env.REGISTRY_ID }}/${{ env.SERVICE_NAME }}:${GITHUB_REF##*/}

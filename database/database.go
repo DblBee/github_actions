@@ -1,6 +1,7 @@
 package database
 
 import (
+	"fmt"
 	"os"
 	"time"
 
@@ -28,6 +29,23 @@ type Database struct{}
 
 func (d *Database) Setup() {
 	dsn := os.Getenv("POSTGRES_URI")
+
+	if os.Getenv("ENVIRONMENT") == "prod" {
+		var (
+			dbUser                 = os.Getenv("DB_USER")
+			dbPwd                  = os.Getenv("DB_PASS")
+			instanceConnectionName = os.Getenv("INSTANCE_CONNECTION_NAME")
+			dbName                 = os.Getenv("DB_NAME")
+		)
+
+		socketDir, isSet := os.LookupEnv("DB_SOCKET_DIR")
+
+		if !isSet {
+			socketDir = "/cloudsql"
+		}
+
+		dsn = fmt.Sprintf("%s:%s@unix(/%s/%s)/%s?parseTime=true", dbUser, dbPwd, socketDir, instanceConnectionName, dbName)
+	}
 
 	var newDB *gorm.DB
 	var err error

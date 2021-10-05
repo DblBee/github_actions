@@ -25,6 +25,7 @@ services:
       - postgres
     environment:
       - "POSTGRES_URI=host=postgres user=admin password=admin dbname=thinkmd-config port=5432 sslmode=disable TimeZone=America/New_York"
+      - "ENVIRONMENT=dev"
     volumes:
       - ./:/app
 

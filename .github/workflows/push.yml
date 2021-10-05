@@ -36,23 +36,23 @@ jobs:
       - name: Teardown unit test environment
         run: docker-compose -f dev.docker-compose.postgresonly.yml down
         
-  integration_test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+  # integration_test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
           
-      - uses: actions/setup-go@v2
-        with:
-          go-version: "^1.17.1"
+  #     - uses: actions/setup-go@v2
+  #       with:
+  #         go-version: "^1.17.1"
 
-      - name: Build the production build for integration test
-        run: docker-compose -f prod.docker-compose.yml up -d
+  #     - name: Build the production build for integration test
+  #       run: docker-compose -f prod.docker-compose.yml up -d
 
-      - name: Run the integration test
-        run: echo THIS IS WHERE WE INJECT THE INTEGRATION TEST LIBRARY OR PROGRAM
+  #     - name: Run the integration test
+  #       run: echo THIS IS WHERE WE INJECT THE INTEGRATION TEST LIBRARY OR PROGRAM
 
-      - name: Teardown integration test environment
-        run: docker-compose -f prod.docker-compose.yml down
+  #     - name: Teardown integration test environment
+  #       run: docker-compose -f prod.docker-compose.yml down
