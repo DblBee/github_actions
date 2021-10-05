@@ -55,8 +55,9 @@ func (d *Database) Setup() {
 		if !isSet {
 			socketDir = "cloudsql"
 		}
+		dsn := fmt.Sprintf("user=%s password=%s database=%s host=%s/%s", dbUser, dbPwd, dbName, socketDir, instanceConnectionName)
 
-		dsn = fmt.Sprintf("%s:%s@unix(/%s/%s)/%s?parseTime=true", dbUser, dbPwd, socketDir, instanceConnectionName, dbName)
+		// dsn = fmt.Sprintf("%s:%s@unix(/%s/%s)/%s?parseTime=true", dbUser, dbPwd, socketDir, instanceConnectionName, dbName)
 		fmt.Println("*******************dsn ", dsn)
 
 		dbConfig.DriverName = "cloudsqlpostgres"
