@@ -30,6 +30,8 @@ type Database struct{}
 func (d *Database) Setup() {
 	dsn := os.Getenv("POSTGRES_URI")
 
+	fmt.Println("*******************ENVIRONMENT ", os.Getenv("ENVIRONMENT"))
+
 	if os.Getenv("ENVIRONMENT") == "prod" {
 		var (
 			dbUser                 = os.Getenv("DB_USER")
