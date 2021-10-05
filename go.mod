@@ -46,6 +46,7 @@ require (
 )
 
 require (
+	github.com/GoogleCloudPlatform/cloudsql-proxy v1.25.0
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
@@ -57,4 +58,24 @@ require (
 	github.com/subosito/gotenv v1.2.0 // indirect
 	gopkg.in/ini.v1 v1.62.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+)
+
+require (
+	cloud.google.com/go v0.94.1 // indirect
+	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/googleapis/gax-go/v2 v2.1.0 // indirect
+	github.com/lib/pq v1.10.3 // indirect
+	go.opencensus.io v0.23.0 // indirect
+	go.uber.org/atomic v1.7.0 // indirect
+	go.uber.org/multierr v1.6.0 // indirect
+	go.uber.org/zap v1.19.0 // indirect
+	golang.org/x/net v0.0.0-20210903162142-ad29c8ab022f // indirect
+	golang.org/x/oauth2 v0.0.0-20210819190943-2bc19b11175f // indirect
+	golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac // indirect
+	google.golang.org/api v0.56.0 // indirect
+	google.golang.org/appengine v1.6.7 // indirect
+	google.golang.org/genproto v0.0.0-20210831024726-fe130286e0e2 // indirect
+	google.golang.org/grpc v1.40.0 // indirect
+	google.golang.org/protobuf v1.27.1 // indirect
 )

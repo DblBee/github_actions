@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/postgres"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
