@@ -34,7 +34,7 @@ func main() {
 
 func HealthCheck(c *fiber.Ctx) error {
 	GetAccount()
-	c.SendString("Alive - V1.0.1")
+	c.SendString("Alive - V1.0.0")
 	return c.SendStatus(200)
 }
 
