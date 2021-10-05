@@ -31,6 +31,10 @@ type Database struct{}
 func (d *Database) Setup() {
 	dsn := os.Getenv("POSTGRES_URI")
 
+	dbConfig := postgres.Config{
+		DSN: dsn,
+	}
+
 	fmt.Println("*******************ENVIRONMENT ", os.Getenv("ENVIRONMENT"))
 
 	if os.Getenv("ENVIRONMENT") == "prod" {
@@ -49,17 +53,20 @@ func (d *Database) Setup() {
 		socketDir, isSet := os.LookupEnv("DB_SOCKET_DIR")
 
 		if !isSet {
-			socketDir = "/cloudsql"
+			socketDir = "cloudsql"
 		}
 
 		dsn = fmt.Sprintf("%s:%s@unix(/%s/%s)/%s?parseTime=true", dbUser, dbPwd, socketDir, instanceConnectionName, dbName)
 		fmt.Println("*******************dsn ", dsn)
+
+		dbConfig.DriverName = "cloudsqlpostgres"
+		dbConfig.DSN = dsn
 	}
 
 	var newDB *gorm.DB
 	var err error
 
-	newDB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	newDB, err = gorm.Open(postgres.New(dbConfig), &gorm.Config{})
 
 	var retries = 10
 	for err != nil {
