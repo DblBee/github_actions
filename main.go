@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/dblbee/github_actions/models"
 	"github.com/gofiber/fiber/v2"
@@ -28,7 +29,7 @@ func main() {
 
 	app.Get("/", HealthCheck)
 
-	app.Listen(":8080")
+	app.Listen(":" + os.Getenv("PORT"))
 }
 
 func HealthCheck(c *fiber.Ctx) error {
