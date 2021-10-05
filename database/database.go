@@ -53,6 +53,7 @@ func (d *Database) Setup() {
 		}
 
 		dsn = fmt.Sprintf("%s:%s@unix(/%s/%s)/%s?parseTime=true", dbUser, dbPwd, socketDir, instanceConnectionName, dbName)
+		fmt.Println("*******************dsn ", dsn)
 	}
 
 	var newDB *gorm.DB
