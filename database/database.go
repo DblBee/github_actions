@@ -40,6 +40,11 @@ func (d *Database) Setup() {
 			dbName                 = os.Getenv("DB_NAME")
 		)
 
+		fmt.Println("*******************DB_USER ", os.Getenv("DB_USER"))
+		fmt.Println("*******************DB_PASS ", os.Getenv("DB_PASS"))
+		fmt.Println("*******************INSTANCE_CONNECTION_NAME ", os.Getenv("INSTANCE_CONNECTION_NAME"))
+		fmt.Println("*******************DB_NAME ", os.Getenv("DB_NAME"))
+
 		socketDir, isSet := os.LookupEnv("DB_SOCKET_DIR")
 
 		if !isSet {
