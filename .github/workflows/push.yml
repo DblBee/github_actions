@@ -3,7 +3,7 @@ name: Generate build number
 on: push
 
 env:
-  BUILD_VERSION: ${{ format('{0}.{1}.{2}', ${github.ref##*/}, $GITHUB_RUN_ID, $GITHUB_RUN_NUMBER) }}
+  BUILD_VERSION: ${{ format('{0}.{1}.{2}', '${github.ref##*/}', $GITHUB_RUN_ID, $GITHUB_RUN_NUMBER) }}
 
 jobs:
   build_deploy:
