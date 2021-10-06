@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Get date
         run: |
-          echo "current_date=$(date +'%Y-%m-%d')" >> $GITHUB_RUN_ID
+          echo "current_date=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
       - name: Echo env date
         run: |
