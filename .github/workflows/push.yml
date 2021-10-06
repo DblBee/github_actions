@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: set new build number
-        env: 
-          BUILD_VERSION: ${{ format('{0}.{1}.{2}', github.ref##*/, env.GITHUB_RUN_ID, env.GITHUB_RUN_NUMBER) }}
+        env:
+          REF: ${github.ref##*/}
+          BUILD_VERSION: ${{ format('{0}.{1}.{2}', env.REF, env.GITHUB_RUN_ID, env.GITHUB_RUN_NUMBER) }}
         run: echo $BUILD_VERSION
