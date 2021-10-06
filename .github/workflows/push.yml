@@ -10,6 +10,7 @@ jobs:
         env:
           REF: ${github.ref##*/}
           BUILD_VERSION: ${{ format('{0}.{1}.{2}', env.REF, env.GITHUB_RUN_ID, env.GITHUB_RUN_NUMBER) }}
-          
+        run: echo "set build number"
+        
       - name: get build number
         run: echo ${{ env.BUILD_VERSION }}
