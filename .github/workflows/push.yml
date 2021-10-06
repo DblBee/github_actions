@@ -4,7 +4,7 @@ on: push
 
 env:
   REF: ${github.ref##*/}
-  BUILD_VERSION: ${{ format('{0}.{1}.{2}', env.REF, env.GITHUB_RUN_ID, env.GITHUB_RUN_NUMBER) }}
+  BUILD_VERSION: ${{ format('{0}.{1}.{2}', $REF, $GITHUB_RUN_ID, $GITHUB_RUN_NUMBER) }}
 
 jobs:
   build_deploy:
