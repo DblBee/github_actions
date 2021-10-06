@@ -2,12 +2,14 @@ name: Generate build number
 
 on: push
 
-env:
-  BUILD_VERSION: ${{ format('{0}.{1}.{2}', '${github.ref##*/}', '$GITHUB_RUN_ID', '$GITHUB_RUN_NUMBER') }}
-
 jobs:
   build_deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: get build number
-        run: echo "${{ env.BUILD_VERSION }}"
+      - name: Get date
+        run: |
+          echo "current_date=$(date +'%Y-%m-%d')" >> $GITHUB_RUN_ID
+
+      - name: Echo env date
+        run: |
+          echo "${{ env.current_date }}"
