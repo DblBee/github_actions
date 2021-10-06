@@ -8,8 +8,8 @@ jobs:
     steps:
       - name: Get date
         run: |
-          echo "current_date=${GITHUB_REF##*/}.${{ env.GITHUB_RUN_ID }}.${{ env.GITHUB_RUN_NUMBER }}" >> $GITHUB_ENV
+          echo "BUILD_VERSION=${GITHUB_REF##*/}.$GITHUB_RUN_ID.$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
 
       - name: Echo env date
         run: |
-          echo "${{ env.current_date }}"
+          echo "${{ env.BUILD_VERSION }}"
